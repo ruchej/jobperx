@@ -32,3 +32,30 @@
 - время обработки должно быть линейным
 
 Приложение может быть реализовано с использованием любого фреймворка. Дополнительным плюсом будет размещение приложения в контейнере Docker. Разработанное приложение необходимо размесить в github-репозитории.
+
+# Использование
+
+pip install -r requirements.txt
+
+cd jobperx
+
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
+
+API
+
+создать пользователя
+curl --location --request POST '127.0.0.1:8000/auth/jwt/create/?username=admin&password=admin'/
+
+для проверки ввести данные суперпользователя
+
+Отправка файла
+curl --location --request POST '127.0.0.1:8000/api/upload/' \
+--header 'Authorization: JWT <token>' \
+--form 'xlfile=<filepath>'
+
+Получить статус
+
+curl --location --request GET 'http://127.0.0.1:8000/api/status/<id>' \
+--header 'Authorization: JWT <token>'

@@ -1,4 +1,5 @@
 import xlrd
+import datetime
 
 
 STATUS_1 = {
@@ -8,7 +9,9 @@ STATUS_1 = {
 
 
 class AnalysisExl:
-    def __init__(self, path):
+    def __init__(self, obj):
+        self.obj = obj
+        path = self.obj.xlfile.path
         self.wb = xlrd.open_workbook(path)
         self.sheets = {}
         for i in self.wb.sheet_names():
@@ -44,7 +47,10 @@ class AnalysisExl:
                     "status": 0,
                     "msg": f"На листе {i} искомое число Х={num_x[0]}",
                 }
-        return result
+        self.obj.result = result
+        self.obj.date_end_proc = datetime.datetime.now()
+        self.obj.status = "processed"
+        self.obj.save()
 
     def _get_data_col(self, sheet, col):
         sh = self.wb.sheet_by_name(sheet)
